@@ -41,6 +41,17 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
 
+  loki-proxy:
+    image: nginx:alpine
+    container_name: loki-proxy
+    ports:
+      - "3101:80"
+    volumes:
+      - ./config/nginx/loki-proxy.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - loki
+    restart: unless-stopped
+
   promtail:
     image: grafana/promtail:latest
     container_name: promtail
